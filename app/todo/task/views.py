@@ -1,9 +1,7 @@
-from datetime import datetime
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
-from django.utils.timezone import make_aware
 from .models import Task
 from .forms import TaskForm
 from .utils import is_ajax
