@@ -57,7 +57,6 @@ var app = new Vue({
             sendRequest('', 'post', formData)
                 .then(function(response){
                     if (vm.edited_id) {
-                        console.log(vm.edited_idx)
                         vm.tasks.splice(vm.edited_idx, 1);
                     }
                     vm.tasks.push(response.data.task);
@@ -86,16 +85,9 @@ var app = new Vue({
         },
 
         editTask(id, index){
-            console.log('editing task')
             this.edited_id = id;
             this.edited_idx = index;
             this.task = this.tasks[index].title
-            // console.log(this.tasks[i])
-            // sendRequest('' + id + '/edit', 'post')
-            //     .then(function(response){
-            //         //using splice because lists and dicts elements in vue are not reactive
-            //         vm.tasks.splice(index, 1);
-            //     })
         }
     }
 })
