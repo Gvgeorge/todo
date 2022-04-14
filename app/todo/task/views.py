@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
+from django.utils.timezone import make_aware
 from .models import Task
 from .forms import TaskForm
 from .utils import is_ajax
@@ -16,13 +17,10 @@ class TaskView(View):
         return render(request, 'task/tasks.html')
 
     def post(self, request):
-        bound_form = TaskForm(request.POST)
+        task = Task.objects.update_or_create(
+            id=request.POST.get('task_id'))[0]
+        bound_form = TaskForm(instance=task, data=request.POST)
         if bound_form.is_valid():
-            if request.POST.get('task_id'):
-                instance = bound_form.save(commit=False)
-                instance.id = int(request.POST['task_id'])
-                instance.date = datetime.now()
-                print(model_to_dict(instance))
             new_or_upd_task = bound_form.save()
             return JsonResponse({'task': model_to_dict(new_or_upd_task)},
                                 status=200)
